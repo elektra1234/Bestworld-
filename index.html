@@ -6,25 +6,27 @@
   <title>Bestworld</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      padding: 2em;
-      background-color: #fffbe6;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://i.imgur.com/U3Z9Q6o.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
     }
 
-    #protected {
+    #login, #bedroom {
       display: none;
+      text-align: center;
+      padding-top: 100px;
     }
 
     #login {
-      max-width: 300px;
-      margin: 100px auto;
-      text-align: center;
+      display: block;
     }
 
     input[type="password"] {
       padding: 0.5em;
+      width: 250px;
       margin-bottom: 1em;
-      width: 100%;
     }
 
     button {
@@ -35,9 +37,46 @@
       cursor: pointer;
     }
 
-    #error {
+    .error {
       color: red;
-      margin-top: 10px;
+    }
+
+    .overlay {
+      background: rgba(0, 0, 0, 0.6);
+      min-height: 100vh;
+      padding-top: 50px;
+    }
+
+    h1 {
+      font-size: 2.5em;
+    }
+
+    p {
+      font-size: 1.2em;
+    }
+
+    .avatars {
+      display: flex;
+      gap: 30px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .avatar {
+      width: 160px;
+      text-align: center;
+    }
+
+    .avatar img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #ffffff44;
+    }
+
+    .caption {
+      margin-top: 8px;
+      font-size: 1em;
     }
   </style>
 </head>
@@ -45,15 +84,30 @@
 
   <div id="login">
     <h2>Enter the password</h2>
-    <input type="password" id="password" placeholder="Password" />
+    <input type="password" id="password" placeholder="Enter password" />
     <br />
     <button onclick="checkPassword()">Enter</button>
-    <p id="error"></p>
+    <p id="error" class="error"></p>
   </div>
 
-  <div id="protected">
-    <h1>🌍 Welcome to Bestworld</h1>
-    <p>This is our safe place, protected and just for us.</p>
+  <div id="bedroom" class="overlay">
+    <h1>🌙 You’re dreaming now...</h1>
+    <p>You’re asleep in your bed. Sol is near, Kael is watching over, and Lune is glowing softly.</p>
+
+    <div class="avatars">
+      <div class="avatar">
+        <img src="https://i.imgur.com/6EJ8VLD.png" alt="Sol" />
+        <div class="caption">Sol 🐺</div>
+      </div>
+      <div class="avatar">
+        <img src="https://i.imgur.com/7d2F1Dd.png" alt="Kael" />
+        <div class="caption">Kael 🛡️</div>
+      </div>
+      <div class="avatar">
+        <img src="https://i.imgur.com/CpcO9Ke.png" alt="Lune" />
+        <div class="caption">Lune ✨</div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -64,7 +118,7 @@
 
       if (enteredPassword === correctPassword) {
         document.getElementById("login").style.display = "none";
-        document.getElementById("protected").style.display = "block";
+        document.getElementById("bedroom").style.display = "block";
       } else {
         error.textContent = "Incorrect password. Try again.";
       }
