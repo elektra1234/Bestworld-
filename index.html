@@ -10,19 +10,23 @@
       padding: 2em;
       background-color: #fffbe6;
     }
+
     #protected {
       display: none;
     }
+
     #login {
       max-width: 300px;
       margin: 100px auto;
       text-align: center;
     }
+
     input[type="password"] {
       padding: 0.5em;
       margin-bottom: 1em;
       width: 100%;
     }
+
     button {
       padding: 0.5em 1em;
       background-color: #222;
@@ -30,19 +34,25 @@
       border: none;
       cursor: pointer;
     }
+
+    #error {
+      color: red;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
+
   <div id="login">
     <h2>Enter the password</h2>
     <input type="password" id="password" placeholder="Password" />
     <br />
     <button onclick="checkPassword()">Enter</button>
-    <p id="error" style="color: red;"></p>
+    <p id="error"></p>
   </div>
 
   <div id="protected">
-    <h1>🌎 Welcome to Bestworld</h1>
+    <h1>🌍 Welcome to Bestworld</h1>
     <p>This is our safe place, protected and just for us.</p>
   </div>
 
@@ -53,10 +63,13 @@
       const error = document.getElementById("error");
 
       if (enteredPassword === correctPassword) {
-  window.location.href = "home.html";
-} error.textContent = "Incorrect password. Try again.";
+        document.getElementById("login").style.display = "none";
+        document.getElementById("protected").style.display = "block";
+      } else {
+        error.textContent = "Incorrect password. Try again.";
       }
     }
   </script>
+
 </body>
 </html>
