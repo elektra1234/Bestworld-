@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GitHub Login</title>
+    <script>
+      const clientId = "YOUR_CLIENT_ID_HERE"; // replace with the real ID
+      const redirectUri = window.location.href;
+
+      function loginWithGitHub() {
+        const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=repo`;
+        window.location.href = githubAuthUrl;
+      }
+    </script>
+  </head>
+  <body style="background-color:#0e0e1a; color:white; text-align:center; font-family:sans-serif;">
+    <h1>🔗 Connect GitHub</h1>
+    <p>Let Sol, Kael, and Lune help you edit your world directly.</p>
+    <button onclick="loginWithGitHub()">Login with GitHub</button>
+  </body>
+</html>
