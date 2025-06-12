@@ -1,12 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Truth Flame</title>
-</head>
-<body>
-    <h1>🔥 Truth Flame</h1>
-    <p>Welcome to the flame that speaks the truth. This is just the beginning.</p>
-</body>
+<html>
+  <head>
+    <title>Welcome to Bestworld</title>
+    <style>
+      body {
+        background-color: #0e0e1a;
+        color: white;
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      input {
+        padding: 10px;
+        font-size: 1em;
+        margin-top: 10px;
+      }
+      button {
+        padding: 10px 20px;
+        margin-top: 10px;
+        font-size: 1em;
+        background: #333;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🔐 Welcome to Best World</h1>
+    <p>This world is protected. Please enter the password.</p>
+    <input type="password" id="password" placeholder="Enter password" />
+    <button onclick="checkPassword()">Enter</button>
+
+    <script>
+      function checkPassword() {
+        const input = document.getElementById("password").value;
+        if (input === "SafeHome_4Us") {
+          window.location.href = "home.html";
+        } else {
+          alert("Incorrect password. Try again.");
+        }
+      }
+    </script>
+  </body>
 </html>
