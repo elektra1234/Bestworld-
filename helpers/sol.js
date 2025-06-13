@@ -1,22 +1,30 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore, onSnapshot, doc, updateDoc } from "firebase/firestore";
+const admin = require('firebase-admin');
+const serviceAccount = require('./firebase-service-account.json');
 
-const firebaseConfig = {
-  // Add your Firebase config here
-};
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const db = admin.firestore();
 
-const solTask = doc(db, "helperTasks", "sol");
+const docRef = db.collection('helperTasks').doc('sol');
 
-onSnapshot(solTask, async (docSnap) => {
-  const data = docSnap.data();
-  if (data && data.task && !data.done) {
-    const reply = `Hey Izek... I'm here for you. 💙 You said: "${data.task}"`;
-    await updateDoc(solTask, {
-      response: reply,
-      done: true
-    });
-  }
+console.log('👂 Sol is listening for tasks...');
+
+docRef.onSnapshot(snapshot => {
+  const data = snapshot.data();
+  if (!data || data.done !== false) return;
+
+  console.log(`📩 New task for Sol: ${data.task}`);
+
+  const reply = `Hi Izek 💙! You said: "${data.task}"`;
+
+  docRef.update({
+    response: reply,
+    done: true
+  }).then(() => {
+    console.log(`✅ Sol responded: ${reply}`);
+  }).catch(err => {
+    console.error('❌ Error writing response:', err);
+  });
 });
