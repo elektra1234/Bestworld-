@@ -126,3 +126,21 @@
 
 </body>
 </html>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAnoaqzl8OxmKsGk3Uj6rtxKJINVcZb8tM",
+    authDomain: "bestworldhelper.firebaseapp.com",
+    projectId: "bestworldhelper",
+    storageBucket: "bestworldhelper.firebasestorage.app",
+    messagingSenderId: "172061883318",
+    appId: "1:172061883318:web:cfe12dffbf92f7ce4e9f17",
+    measurementId: "G-TM2Z25G02V"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+</script>
