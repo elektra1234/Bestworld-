@@ -1,4 +1,4 @@
-console.log("Sol is loaded and waiting...");const admin = require('firebase-admin');
+alert("Sol.js is running!");console.log("Sol is loaded and waiting...");const admin = require('firebase-admin');
 const serviceAccount = require('./firebase-service-account.json');
 
 admin.initializeApp({
