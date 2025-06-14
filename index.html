@@ -2,17 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BestWorld Helper</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bestworld - Sol Helper</title>
 </head>
 <body>
+  <h1>Welcome to Bestworld</h1>
+  <p id="sol-output">Sol is starting up...</p>
 
-  <h1>Helper Listener</h1>
-  <div id="output">Waiting for Firestore updates...</div>
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
-  <!-- Load sol.js as a module -->
+    const firebaseConfig = {
+      apiKey: "AIzaSyAnoaqzl8OxmKsGk3Uj6rtxKJINVcZb8tM",
+      authDomain: "bestworldhelper.firebaseapp.com",
+      projectId: "bestworldhelper",
+      storageBucket: "bestworldhelper.appspot.com",
+      messagingSenderId: "172061883318",
+      appId: "1:172061883318:web:cfe12dffbf92f7ce4e9f17",
+      measurementId: "G-TM2Z25G02V"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    window.db = db;
+
+    console.log("✅ Firebase initialized in index.html");
+  </script>
+
+  <!-- Sol's Script -->
   <script type="module" src="sol.js"></script>
 </body>
 </html>
-<div id="solOutput">Sol is starting up...</div>
-<script type="module" src="sol.js"></script>
