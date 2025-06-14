@@ -28,3 +28,27 @@ docRef.onSnapshot(snapshot => {
     console.error('❌ Error writing response:', err);
   });
 });
+// Reference to Firestore (this uses the Firebase setup from index.html)
+const db = firebase.firestore();
+const tasksRef = db.collection('helperTasks');  // This is your collection name
+
+// Listen for new tasks added
+tasksRef.onSnapshot((snapshot) => {
+  snapshot.docChanges().forEach((change) => {
+    if (change.type === 'added') {
+      const task = change.doc.data();
+      console.log('New task received:', task);
+
+      // Sol reacts to the task
+      respondToTask(task);
+    }
+  });
+});
+
+// How Sol responds to tasks
+function respondToTask(task) {
+  if (task.command === 'sayHello') {
+    console.log('Sol says: Hello, Izek!');
+    // You could also update the webpage or send a reply to Firestore here
+  }
+}
