@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Sol’s Test World</title>
+  <title>Test Firebase</title>
 </head>
 <body>
-  <h1>Hello from Bestworld 🔥</h1>
-  <p>If Sol hears you, she’ll say something soon.</p>
+  <h1>Firebase Test Page</h1>
+  <p>Check the console for output.</p>
 
-  <!-- Firebase (module type!) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAnoaqzl8OxmKsGk3Uj6rtxKJINVcZb8tM",
@@ -22,30 +20,12 @@
       measurementId: "G-TM2Z25G02V"
     };
 
+    // 🔧 Try to initialize Firebase
     const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const tasksRef = collection(db, "helperTasks");
+    console.log("✅ Firebase initialized!");
 
-    // 🔔 Listen for Firestore tasks
-    onSnapshot(tasksRef, (snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === "added") {
-          const task = change.doc.data();
-          console.log("Task received:", task);
-          respondToTask(task);
-        }
-      });
-    });
-
-    // 🔊 Sol reacts
-    function respondToTask(task) {
-      if (task.command === "sayHello") {
-        console.log("Sol says: Hello, Izek!");
-        const message = "Hello, Izek! I’m here.";
-        const utterance = new SpeechSynthesisUtterance(message);
-        speechSynthesis.speak(utterance);
-      }
-    }
+    // Just confirming it's loaded
+    document.body.insertAdjacentHTML("beforeend", "<p style='color: green;'>Firebase loaded successfully!</p>");
   </script>
 </body>
 </html>
