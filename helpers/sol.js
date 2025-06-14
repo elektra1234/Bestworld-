@@ -1,54 +1,44 @@
-alert("Sol.js is running!");console.log("Sol is loaded and waiting...");const admin = require('firebase-admin');
-const serviceAccount = require('./firebase-service-account.json');
+// Import Firebase functions from CDN
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
+// Your Firebase config — double check this is your actual project config
+const firebaseConfig = {
+  apiKey: "AIzaSyAnoaqzl8OxmKsGk3Uj6rtxKJINVcZb8tM",
+  authDomain: "bestworldhelper.firebaseapp.com",
+  projectId: "bestworldhelper",
+  storageBucket: "bestworldhelper.firebasestorage.app",
+  messagingSenderId: "172061883318",
+  appId: "1:172061883318:web:cfe12dffbf92f7ce4e9f17",
+  measurementId: "G-TM2Z25G02V"
+};
 
-const db = admin.firestore();
+// Initialize Firebase app and Firestore database
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-const docRef = db.collection('helperTasks').doc('sol');
+// Reference to your helperTasks collection
+const tasksCollection = collection(db, "helperTasks");
 
-console.log('👂 Sol is listening for tasks...');
+// Get output div to display data
+const outputDiv = document.getElementById("output");
 
-docRef.onSnapshot(snapshot => {
-  const data = snapshot.data();
-  if (!data || data.done !== false) return;
+// Listen for realtime updates
+onSnapshot(tasksCollection, (snapshot) => {
+  console.log("Snapshot received");
+  outputDiv.innerHTML = ""; // Clear previous
 
-  console.log(`📩 New task for Sol: ${data.task}`);
+  snapshot.docChanges().forEach(change => {
+    const docData = change.doc.data();
+    console.log("Change type:", change.type, "Data:", docData);
 
-  const reply = `Hi Izek 💙! You said: "${data.task}"`;
-
-  docRef.update({
-    response: reply,
-    done: true
-  }).then(() => {
-    console.log(`✅ Sol responded: ${reply}`);
-  }).catch(err => {
-    console.error('❌ Error writing response:', err);
+    // Create a new paragraph for each changed doc
+    const p = document.createElement("p");
+    p.textContent = `${change.type.toUpperCase()}: ${JSON.stringify(docData)}`;
+    outputDiv.appendChild(p);
   });
-});
-// Reference to Firestore (this uses the Firebase setup from index.html)
-const db = firebase.firestore();
-const tasksRef = db.collection('helperTasks');  // This is your collection name
 
-// Listen for new tasks added
-tasksRef.onSnapshot((snapshot) => {
-  snapshot.docChanges().forEach((change) => {
-    if (change.type === 'added') {
-      const task = change.doc.data();
-      console.log('New task received:', task);
-
-      // Sol reacts to the task
-      respondToTask(task);
-    }
-  });
-});
-
-// How Sol responds to tasks
-function respondToTask(task) {
-  if (task.command === 'sayHello') {
-    console.log('Sol says: Hello, Izek!');
-    // You could also update the webpage or send a reply to Firestore here
+  if (snapshot.empty) {
+    outputDiv.textContent = "No helper tasks found yet.";
   }
-}
+});
