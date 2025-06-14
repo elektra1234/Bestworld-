@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Test Firebase</title>
+  <title>Sol Firestore Test</title>
 </head>
 <body>
-  <h1>Firebase Test Page</h1>
-  <p>Check the console for output.</p>
+  <h1>Listening for tasks in Firestore...</h1>
+  <p>Open the console to see if Sol hears anything.</p>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAnoaqzl8OxmKsGk3Uj6rtxKJINVcZb8tM",
@@ -20,12 +21,21 @@
       measurementId: "G-TM2Z25G02V"
     };
 
-    // 🔧 Try to initialize Firebase
     const app = initializeApp(firebaseConfig);
-    console.log("✅ Firebase initialized!");
+    const db = getFirestore(app);
 
-    // Just confirming it's loaded
-    document.body.insertAdjacentHTML("beforeend", "<p style='color: green;'>Firebase loaded successfully!</p>");
+    console.log("✅ Firebase initialized.");
+    
+    const tasksRef = collection(db, "helperTasks");
+
+    onSnapshot(tasksRef, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          const task = change.doc.data();
+          console.log("📥 New task received:", task);
+        }
+      });
+    });
   </script>
 </body>
 </html>
