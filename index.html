@@ -1,42 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Sol Firestore Test</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BestWorld Helper</title>
 </head>
 <body>
-  <h1>Listening for tasks in Firestore...</h1>
-  <p>Open the console to see if Sol hears anything.</p>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+  <h1>Helper Listener</h1>
+  <div id="output">Waiting for Firestore updates...</div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAnoaqzl8OxmKsGk3Uj6rtxKJINVcZb8tM",
-      authDomain: "bestworldhelper.firebaseapp.com",
-      projectId: "bestworldhelper",
-      storageBucket: "bestworldhelper.appspot.com",
-      messagingSenderId: "172061883318",
-      appId: "1:172061883318:web:cfe12dffbf92f7ce4e9f17",
-      measurementId: "G-TM2Z25G02V"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    console.log("✅ Firebase initialized.");
-    
-    const tasksRef = collection(db, "helperTasks");
-
-    onSnapshot(tasksRef, (snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === "added") {
-          const task = change.doc.data();
-          console.log("📥 New task received:", task);
-        }
-      });
-    });
-  </script>
+  <!-- Load sol.js as a module -->
+  <script type="module" src="sol.js"></script>
 </body>
 </html>
-<script type="module" src="sol.js"></script>
