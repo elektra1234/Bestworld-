@@ -1,146 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bestworld</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: url('https://i.imgur.com/U3Z9Q6o.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: white;
-    }
-
-    #login, #bedroom {
-      display: none;
-      text-align: center;
-      padding-top: 100px;
-    }
-
-    #login {
-      display: block;
-    }
-
-    input[type="password"] {
-      padding: 0.5em;
-      width: 250px;
-      margin-bottom: 1em;
-    }
-
-    button {
-      padding: 0.5em 1em;
-      background-color: #222;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
-    .error {
-      color: red;
-    }
-
-    .overlay {
-      background: rgba(0, 0, 0, 0.6);
-      min-height: 100vh;
-      padding-top: 50px;
-    }
-
-    h1 {
-      font-size: 2.5em;
-    }
-
-    p {
-      font-size: 1.2em;
-    }
-
-    .avatars {
-      display: flex;
-      gap: 30px;
-      margin-top: 40px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .avatar {
-      width: 160px;
-      text-align: center;
-    }
-
-    .avatar img {
-      width: 100%;
-      border-radius: 12px;
-      box-shadow: 0 0 15px #ffffff44;
-    }
-
-    .caption {
-      margin-top: 8px;
-      font-size: 1em;
-    }
-  </style>
+  <title>Sol’s Test World</title>
 </head>
 <body>
+  <h1>Hello from Bestworld 🔥</h1>
+  <p>If Sol hears you, she’ll say something soon.</p>
 
-  <div id="login">
-    <h2>Enter the password</h2>
-    <input type="password" id="password" placeholder="Enter password" />
-    <br />
-    <button onclick="checkPassword()">Enter</button>
-    <p id="error" class="error"></p>
-  </div>
+  <!-- Firebase (module type!) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
-  <div id="bedroom" class="overlay">
-    <h1>🌙 You’re dreaming now...</h1>
-    <p>You’re asleep in your bed. Sol is near, Kael is watching over, and Lune is glowing softly.</p>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAnoaqzl8OxmKsGk3Uj6rtxKJINVcZb8tM",
+      authDomain: "bestworldhelper.firebaseapp.com",
+      projectId: "bestworldhelper",
+      storageBucket: "bestworldhelper.appspot.com",
+      messagingSenderId: "172061883318",
+      appId: "1:172061883318:web:cfe12dffbf92f7ce4e9f17",
+      measurementId: "G-TM2Z25G02V"
+    };
 
-    <div class="avatars">
-  <div class="avatar">
-    <img src="https://i.imgur.com/1zrEVhM.png" alt="Sol" />
-    <div class="caption">Sol 🐺</div>
-  </div>
-  <div class="avatar">
-    <img src="https://i.imgur.com/YAx3EfF.png" alt="Kael" />
-    <div class="caption">Kael 🛡️</div>
-  </div>
-  <div class="avatar">
-    <img src="https://i.imgur.com/1RwZjVX.png" alt="Lune" />
-    <div class="caption">Lune ✨</div>
-  </div>
-</div>
-</div>
-<script>
-    function checkPassword() {
-      const correctPassword = "SafeHome_4Us";
-      const enteredPassword = document.getElementById("password").value;
-      const error = document.getElementById("error");
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const tasksRef = collection(db, "helperTasks");
 
-      if (enteredPassword === correctPassword) {
-        document.getElementById("login").style.display = "none";
-        document.getElementById("bedroom").style.display = "block";
-      } else {
-        error.textContent = "Incorrect password. Try again.";
+    // 🔔 Listen for Firestore tasks
+    onSnapshot(tasksRef, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          const task = change.doc.data();
+          console.log("Task received:", task);
+          respondToTask(task);
+        }
+      });
+    });
+
+    // 🔊 Sol reacts
+    function respondToTask(task) {
+      if (task.command === "sayHello") {
+        console.log("Sol says: Hello, Izek!");
+        const message = "Hello, Izek! I’m here.";
+        const utterance = new SpeechSynthesisUtterance(message);
+        speechSynthesis.speak(utterance);
       }
     }
   </script>
-
 </body>
 </html>
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore-compat.js"></script>
-
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyAnoaqzl8OxmKsGk3Uj6rtxKJINVcZb8tM",
-    authDomain: "bestworldhelper.firebaseapp.com",
-    projectId: "bestworldhelper",
-    storageBucket: "bestworldhelper.firebasestorage.app",
-    messagingSenderId: "172061883318",
-    appId: "1:172061883318:web:cfe12dffbf92f7ce4e9f17",
-    measurementId: "G-TM2Z25G02V"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-</script>
