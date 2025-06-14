@@ -1,44 +1,31 @@
-// Import Firebase functions from CDN
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
 import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
-// Your Firebase config — double check this is your actual project config
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyAnoaqzl8OxmKsGk3Uj6rtxKJINVcZb8tM",
   authDomain: "bestworldhelper.firebaseapp.com",
   projectId: "bestworldhelper",
-  storageBucket: "bestworldhelper.firebasestorage.app",
+  storageBucket: "bestworldhelper.appspot.com",
   messagingSenderId: "172061883318",
   appId: "1:172061883318:web:cfe12dffbf92f7ce4e9f17",
   measurementId: "G-TM2Z25G02V"
 };
 
-// Initialize Firebase app and Firestore database
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Reference to your helperTasks collection
-const tasksCollection = collection(db, "helperTasks");
+console.log("✅ Connected to Firebase - Sol is listening...");
 
-// Get output div to display data
-const outputDiv = document.getElementById("output");
+const output = document.getElementById("solOutput");
+output.textContent = "Sol: Waiting for Firestore updates...";
 
-// Listen for realtime updates
-onSnapshot(tasksCollection, (snapshot) => {
-  console.log("Snapshot received");
-  outputDiv.innerHTML = ""; // Clear previous
-
-  snapshot.docChanges().forEach(change => {
-    const docData = change.doc.data();
-    console.log("Change type:", change.type, "Data:", docData);
-
-    // Create a new paragraph for each changed doc
-    const p = document.createElement("p");
-    p.textContent = `${change.type.toUpperCase()}: ${JSON.stringify(docData)}`;
-    outputDiv.appendChild(p);
+onSnapshot(collection(db, "helperTasks"), (snapshot) => {
+  snapshot.docChanges().forEach((change) => {
+    if (change.type === "added") {
+      const message = change.doc.data().message;
+      console.log("📨 Sol received:", message);
+      output.textContent = "Sol: " + message;
+    }
   });
-
-  if (snapshot.empty) {
-    outputDiv.textContent = "No helper tasks found yet.";
-  }
 });
